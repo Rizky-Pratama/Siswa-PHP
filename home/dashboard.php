@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 
@@ -21,7 +21,7 @@
             </button>
             <div class="collapse navbar-collapse col-md-auto" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link " href="#">Home <span class="sr-only">(current)</span></a>
                     <a class="nav-link" href="tambahSiswa.php">Tambah Siswa</a>
                 </div>
             </div>
@@ -62,47 +62,9 @@
                                         <td><?php echo $row['no_telp'] ?></td>
                                         <td><?php echo $row['alamat'] ?></td>
                                         <td class="text-center">
-                                            <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal<?php echo $row['id_siswa'] ?>">Edit</a>
+                                            <a class="btn btn-sm btn-primary btn-edit " href="formEdit.php?id=<?php echo $row['id_siswa'] ?>">Edit</a>
                                             <a class="btn btn-sm btn-danger" onclick="hapus(<?php echo $row['id_siswa'] ?>)">Hapus</a>
                                         </td>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="myModal<?php echo $row['id_siswa'] ?>" tabindex="-1" data-backdrop="static" data-keyboard="false">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Edit Siswa</h5>
-                                                        <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>NISN</label>
-                                                            <input type="text" id="nisn" placeholder="Masukkan NISN Siswa" class="form-control" readonly value="<?php echo $row['nisn'] ?>">
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Nama Lengkap</label>
-                                                            <input type="text" id="nama" placeholder="Masukkan Nama Siswa" class="form-control" value="<?php echo $row['nama'] ?>">
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>No HP</label>
-                                                            <input type="number" id="no_telp" placeholder="Masukkan No HP" class="form-control" value="<?php echo $row['no_telp'] ?>">
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Alamat</label>
-                                                            <textarea class="form-control" id="alamat" placeholder="Masukkan Alamat Siswa" rows="4" style="resize: none;"><?php echo $row['alamat'] ?></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-close" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary btn-simpan">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -122,123 +84,18 @@
 
     <script>
         $(document).ready(function() {
+
             $('#myTable').DataTable();
-        });
 
-
-        // Hapus Data
-        function hapus(id) {
-
-            $.ajax({
-                type: 'POST',
-                data: "id=" + id,
-                url: 'hapusSiswa.php',
-                success: function(response) {
-
-                    if (response == "success") {
-
-                        Swal.fire({
-                                type: 'success',
-                                title: 'Berhasil!',
-                                text: 'Data sudah dihapus'
-                            })
-                            .then(function() {
-                                window.location.href = "dashboard.php";
-                            });
-
-                    } else {
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Gagal!',
-                            text: 'Data gagal dihapus'
-                        });
-
-                    }
-
-                }
-            });
-        }
-
-        // Edit data
-        // function edit(id) {
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         data: "id=" + id,
-        //         url: 'editSiswa.php',
-        //         success: function(response) {
-
-        //             if (!response == "success") {
-
-        //                 Swal.fire({
-        //                     type: 'error',
-        //                     title: 'gagal!',
-        //                     text: 'Data sudah dihapus'
-        //                 })
-
-        //             }
-
-        //         }
-        //     });
-        // }
-
-        // $(".btn-close").click(function() {
-        //     <hp session_unset(); ?>
-        // });
-
-        // Simpan edit data
-        $(".btn-simpan").click(function() {
-
-            var nisn = $("#nisn").val();
-            var nama = $("#nama").val();
-            var no_telp = $("#no_telp").val();
-            var alamat = $("#alamat").val();
-
-            if (nisn.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'NISN Lengkap Wajib Diisi !'
-                });
-
-            } else if (nama.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Nama Wajib Diisi !'
-                });
-
-            } else if (no_telp.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'No HP Wajib Diisi !'
-                });
-
-            } else if (alamat.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Alamat Wajib Diisi !'
-                });
-
-            } else {
+            // Hapus Data
+            function hapus(id) {
 
                 $.ajax({
-
-                    url: "simpanEditSiswa.php",
-                    type: "POST",
+                    type: 'POST',
                     data: {
-                        "nisn": nisn,
-                        "nama": nama,
-                        "no_telp": no_telp,
-                        "alamat": alamat
+                        id: id
                     },
-
+                    url: 'hapusSiswa.php',
                     success: function(response) {
 
                         if (response == "success") {
@@ -246,46 +103,24 @@
                             Swal.fire({
                                     type: 'success',
                                     title: 'Berhasil!',
-                                    text: 'Data sudah terubah',
-                                    timer: 3000,
-                                    showCancelButton: false,
-                                    showConfirmButton: false
+                                    text: 'Data sudah dihapus'
                                 })
                                 .then(function() {
                                     window.location.href = "dashboard.php";
                                 });
 
-                            $("#nisn").val('');
-                            $("#nama").val('');
-                            $("#no_telp").val('');
-                            $("#alamat").val('');
-
                         } else {
-
                             Swal.fire({
                                 type: 'error',
                                 title: 'Gagal!',
-                                text: 'Data gagal ditambah!'
+                                text: 'Data gagal dihapus'
                             });
 
                         }
 
-                        console.log(response);
-
-                    },
-
-                    error: function(response) {
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Opps!',
-                            text: 'server error!'
-                        });
                     }
-
-                })
-
+                });
             }
-
         });
     </script>
 </body>
