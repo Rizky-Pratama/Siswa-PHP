@@ -19,9 +19,9 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse col-md-auto" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link " href="#">Home <span class="sr-only">(current)</span></a>
+            <div class="collapse navbar-collapse col-md-auto justify-content-end" id="navbarNavAltMarkup">
+                <div class="navbar-nav ">
+                    <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
                     <a class="nav-link" href="tambahSiswa.php">Tambah Siswa</a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                                         <td><?php echo $row['alamat'] ?></td>
                                         <td class="text-center">
                                             <a class="btn btn-sm btn-primary btn-edit " href="formEdit.php?id=<?php echo $row['id_siswa'] ?>">Edit</a>
-                                            <a class="btn btn-sm btn-danger" onclick="hapus(<?php echo $row['id_siswa'] ?>)">Hapus</a>
+                                            <button class="btn btn-sm btn-danger" onclick="hapus(<?php echo $row['id_siswa'] ?>)">Hapus</button>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -82,46 +82,47 @@
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script>
 
-    <script>
+    <script async='async' type='text/javascript'>
         $(document).ready(function() {
 
             $('#myTable').DataTable();
 
-            // Hapus Data
-            function hapus(id) {
+        });
 
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        id: id
-                    },
-                    url: 'hapusSiswa.php',
-                    success: function(response) {
+        // Hapus Data
+        function hapus(id) {
 
-                        if (response == "success") {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                url: 'hapusSiswa.php',
+                success: function(response) {
 
-                            Swal.fire({
-                                    type: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Data sudah dihapus'
-                                })
-                                .then(function() {
-                                    window.location.href = "dashboard.php";
-                                });
+                    if (response == "success") {
 
-                        } else {
-                            Swal.fire({
-                                type: 'error',
-                                title: 'Gagal!',
-                                text: 'Data gagal dihapus'
+                        Swal.fire({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                text: 'Data sudah dihapus'
+                            })
+                            .then(function() {
+                                window.location.href = "dashboard.php";
                             });
 
-                        }
+                    } else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Gagal!',
+                            text: 'Data gagal dihapus'
+                        });
 
                     }
-                });
-            }
-        });
+
+                }
+            });
+        }
     </script>
 </body>
 
